@@ -1,5 +1,6 @@
 ﻿using ContainerManagement.Model;
 using ContainerManagement.ViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ContainerManagement.Controllers
@@ -16,16 +17,18 @@ namespace ContainerManagement.Controllers
             _containerRepository = containerRepository ?? throw new ArgumentNullException();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Add(ContainerViewModel containerView)    
         {
-            var container = new Container(containerView.container_description, containerView.container_name, containerView.container_type_id, containerView.container_status_id);  
+            var container = new Container(containerView.container_description, containerView.container_name, containerView.container_type_id, containerView.container_status_id);
 
             _containerRepository.Add(container);
 
             return Ok();
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
