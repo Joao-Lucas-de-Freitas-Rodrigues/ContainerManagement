@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "J7cuhbiBMlSpIqmP7ToFsQ3M66fuJEz57isyHfEi8Qk=",
+  "Source": "ContainerManagement",
+  "BasePath": "_content/ContainerManagement",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
