@@ -58,3 +58,12 @@ C:\GIT\ContainerManagement\Backend\ContainerManagement\obj\Debug\net8.0\refint\C
 C:\GIT\ContainerManagement\Backend\ContainerManagement\obj\Debug\net8.0\ContainerManagement.pdb
 C:\GIT\ContainerManagement\Backend\ContainerManagement\obj\Debug\net8.0\ContainerManagement.genruntimeconfig.cache
 C:\GIT\ContainerManagement\Backend\ContainerManagement\obj\Debug\net8.0\ref\ContainerManagement.dll
+C:\GIT\ContainerManagement\Backend\ContainerManagement\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\GIT\ContainerManagement\Backend\ContainerManagement\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\GIT\ContainerManagement\Backend\ContainerManagement\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\GIT\ContainerManagement\Backend\ContainerManagement\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\GIT\ContainerManagement\Backend\ContainerManagement\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\GIT\ContainerManagement\Backend\ContainerManagement\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\GIT\ContainerManagement\Backend\ContainerManagement\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\GIT\ContainerManagement\Backend\ContainerManagement\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\GIT\ContainerManagement\Backend\ContainerManagement\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
