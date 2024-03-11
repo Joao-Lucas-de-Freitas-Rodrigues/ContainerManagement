@@ -2,6 +2,7 @@
 using ContainerManagement.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace ContainerManagement.Controllers
 {
@@ -19,7 +20,7 @@ namespace ContainerManagement.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult Add(ContainerViewModel containerView)    
+        public IActionResult Add(ContainerViewModel containerView)
         {
             var container = new Container(containerView.container_description, containerView.container_name, containerView.container_type_id, containerView.container_status_id);
 
@@ -35,6 +36,37 @@ namespace ContainerManagement.Controllers
             var container = _containerRepository.Get();
 
             return Ok(container);
+        }
+
+        [Authorize]
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var container = _containerRepository.GetById(id);
+
+            return Ok(container);
+        }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, ContainerViewModel containerView)
+        {
+            var container = new Container(containerView.container_description, containerView.container_name, containerView.container_type_id, containerView.container_status_id);
+
+            _containerRepository.Put(id, container);
+
+            return Ok();
+        }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public IActionResult DeleteUser(int id)
+        {
+            var container = _containerRepository.GetById(id);
+
+            _containerRepository.Delete(container);
+
+            return Ok();
         }
     }
 }

@@ -28,7 +28,7 @@ namespace ContainerManagement.Controllers
 
             var token = TokenServices.GenerateToken(user);
 
-             return Ok(token);
+            return Ok(token);
         }
     }
 }
