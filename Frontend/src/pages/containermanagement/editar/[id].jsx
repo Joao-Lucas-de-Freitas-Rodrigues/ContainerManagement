@@ -35,20 +35,17 @@ export default function Editar() {
         setValue(field, container[field])
     })
 
-    useEffect(() => {
+    useEffect(async () => {
         try {
-            (async () => {
-                setContainer(await getContainerId(router.query.id))
-                setContainerType(await getType())
-                setContainerStatus(await getStatus())
-            })()
+            setContainer(await getContainerId(router.query.id))
+            setContainerType(await getType())
+            setContainerStatus(await getStatus())
         } catch (error) {
             console.log(error)
         }
     }, []);
 
     async function containerSubmit(container) {
-        console.log(container)
         try {
             await putContainer(router.query.id, container);
         } catch (error) {
@@ -61,7 +58,7 @@ export default function Editar() {
             <h2>Editar</h2>
             <Form onSubmit={handleSubmit(containerSubmit)}>
                 <Row>
-                <Col md={3}>
+                    <Col md={3}>
                         <FormGroup>
                             <Label for="containerId">
                                 Container

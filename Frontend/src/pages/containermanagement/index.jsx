@@ -14,11 +14,9 @@ const Container = () => {
     const [container, setContainer] = useState([]);
 
 
-    useEffect(() => {
+    useEffect(async () => {
         try {
-            (async () => {
-                setContainer(await getContainer())
-            })()
+            setContainer(await getContainer())
         } catch (error) {
             console.log(error)
         }
@@ -89,9 +87,9 @@ const Container = () => {
                                         color="danger"
                                         onClick={() => { Excluir(item.id) }}
                                     >{
-                                        <HiOutlineTrash size={22} />
-                                    }
-                                        
+                                            <HiOutlineTrash size={22} />
+                                        }
+
                                     </Button>
                                     <ToastContainer />
                                 </div>

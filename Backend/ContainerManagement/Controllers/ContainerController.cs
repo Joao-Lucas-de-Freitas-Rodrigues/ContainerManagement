@@ -1,4 +1,5 @@
 ﻿using ContainerManagement.Model;
+using ContainerManagement.Repository;
 using ContainerManagement.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,7 @@ namespace ContainerManagement.Controllers
 
         public ContainerController(IContainerRepository containerRepository)
         {
-            _containerRepository = containerRepository ?? throw new ArgumentNullException("a", "Erro ao conectar");
+            _containerRepository = containerRepository ?? throw new ArgumentNullException(nameof(userRepository), "Erro ao conectar");
         }
 
         [Authorize]
