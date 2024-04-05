@@ -1,7 +1,7 @@
 ﻿using ContainerManagement.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace ContainerManagement.Infra
+namespace ContainerManagement.Repository
 {
     public class ContainerStatusRepository : IContainerStatusRepository
     {

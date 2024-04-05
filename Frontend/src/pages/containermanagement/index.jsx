@@ -1,10 +1,9 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
-import api from '../../api/config';
 import { useEffect, useState } from "react";
 import { getContainer, deleteContainer } from '../../services/containermanagement/containerServices';
 import Layout from '../../components/Layout'
 import { Table, Button } from "reactstrap";
-import { HiOutlinePencilAlt, HiOutlineShoppingBag, HiOutlineTrash, HiPlus } from "react-icons/hi";
+import { HiOutlinePencilAlt, HiOutlineTrash, HiPlus } from "react-icons/hi";
 import Styles from '../../styles/home.module.css';
 import Router from 'next/router';
 import { ToastContainer, toast } from 'react-toastify';
@@ -19,7 +18,6 @@ const Container = () => {
         try {
             (async () => {
                 setContainer(await getContainer())
-                console.log(container)
             })()
         } catch (error) {
             console.log(error)
@@ -30,7 +28,7 @@ const Container = () => {
         const confirmDelete = window.confirm("Tem certeza que deseja excluir?");
         if (confirmDelete) {
             try {
-                const userData = await deleteContainer(id);
+                await deleteContainer(id);
                 toast("Exclusão realizada com sucesso!");
                 setContainer(await getContainer())
             } catch (error) {

@@ -13,7 +13,7 @@ namespace ContainerManagement.Controllers
 
         public ContainerTypeController(IContainerTypeRepository containerTypeRepository)
         {
-            _containerTypeRepository = containerTypeRepository ?? throw new ArgumentNullException();
+            _containerTypeRepository = containerTypeRepository ?? throw new ArgumentNullException("a", "Erro ao conectar");
         }
 
         [Authorize]

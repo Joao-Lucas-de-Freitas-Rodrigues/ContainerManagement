@@ -3,7 +3,7 @@ import Router from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
 
 export async function getContainer() {
-    var response = await api.get('/container')
+    const response = await api.get('/container')
         .then((response) => {
             return response.data
         })
@@ -14,8 +14,7 @@ export async function getContainer() {
 }
 
 export async function postContainer(values) {
-    console.log(values)
-    var response = await api.post('/container', values)
+    const response = await api.post('/container', values)
         .then(() => {
             Router.push('/containermanagement')
         })
@@ -26,8 +25,7 @@ export async function postContainer(values) {
 }
 
 export async function getContainerId(id) {
-    console.log(id)
-    var response = await api.get('/container/' + id)
+    const response = await api.get('/container/' + id)
         .then((response) => {
             return response.data
         })
@@ -38,8 +36,7 @@ export async function getContainerId(id) {
 }
 
 export async function putContainer(id, values) {
-    console.log(id)
-    var response = await api.put('/container/' + id, values)
+    const response = await api.put('/container/' + id, values)
         .then(() => {
             Router.push('/containermanagement')
         })
@@ -50,7 +47,7 @@ export async function putContainer(id, values) {
 }
 
 export async function deleteContainer(id) {
-    var response = await api.delete('/container/' + id)
+    const response = await api.delete('/container/' + id)
         .then(() => {
             Router.push('/containermanagement')
         })

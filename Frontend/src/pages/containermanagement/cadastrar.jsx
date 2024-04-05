@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect, useState } from "react";
+import React,{ useEffect, useState } from "react";
 import Layout from '../../components/Layout'
 import { Form, Col, FormGroup, Input, Label, Row, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -25,12 +24,10 @@ export default function Cadastrar() {
     const [containerType, setContainerType] = useState([]);
     const [containerStatus, setContainerStatus] = useState([]);
 
-    useEffect(() => {
+    useEffect(async () => {
         try {
-            (async () => {
-                setContainerType(await getType())
-                setContainerStatus(await getStatus())
-            })()
+            setContainerType(await getType())
+            setContainerStatus(await getStatus())
         } catch (error) {
             console.log(error)
         }
@@ -42,7 +39,7 @@ export default function Cadastrar() {
 
     async function containerSubmit(user) {
         try {
-            const userData = await postContainer(user);
+            await postContainer(user);
         } catch (error) {
             console.error('Erro ao autenticar usuário:', error);
         }

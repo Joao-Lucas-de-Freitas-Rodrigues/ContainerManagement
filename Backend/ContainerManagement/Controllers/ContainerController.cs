@@ -15,7 +15,7 @@ namespace ContainerManagement.Controllers
 
         public ContainerController(IContainerRepository containerRepository)
         {
-            _containerRepository = containerRepository ?? throw new ArgumentNullException();
+            _containerRepository = containerRepository ?? throw new ArgumentNullException("a", "Erro ao conectar");
         }
 
         [Authorize]

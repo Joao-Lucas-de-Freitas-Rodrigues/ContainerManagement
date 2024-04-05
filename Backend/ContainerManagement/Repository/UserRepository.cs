@@ -1,7 +1,7 @@
 ﻿using ContainerManagement.Model;
 using BC = BCrypt.Net.BCrypt;
 
-namespace ContainerManagement.Infra
+namespace ContainerManagement.Repository
 {
     public class UserRepository : IUserRepository
     {

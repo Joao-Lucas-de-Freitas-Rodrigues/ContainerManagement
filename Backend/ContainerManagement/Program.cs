@@ -1,4 +1,4 @@
-using ContainerManagement.Infra;
+using ContainerManagement.Repository;
 using ContainerManagement.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+string bearer = "Bearer";
 
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
@@ -19,12 +20,12 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
 
-    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    c.AddSecurityDefinition(bearer, new OpenApiSecurityScheme
     {
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
-        Scheme = "Bearer"
+        Scheme = bearer
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement()
@@ -35,10 +36,10 @@ builder.Services.AddSwaggerGen(c =>
         Reference = new OpenApiReference
             {
             Type = ReferenceType.SecurityScheme,
-            Id = "Bearer"
+            Id = bearer
             },
             Scheme = "oauth2",
-            Name = "Bearer",
+            Name = bearer,
             In = ParameterLocation.Header,
 
         },

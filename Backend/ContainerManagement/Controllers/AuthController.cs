@@ -13,7 +13,7 @@ namespace ContainerManagement.Controllers
 
         public AuthController(IUserRepository userRepository)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException();
+            _userRepository = userRepository ?? throw new ArgumentNullException("a", "Erro ao conectar");
         }
 
         [HttpPost]

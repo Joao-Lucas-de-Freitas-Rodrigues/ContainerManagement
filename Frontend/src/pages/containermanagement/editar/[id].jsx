@@ -50,7 +50,7 @@ export default function Editar() {
     async function containerSubmit(container) {
         console.log(container)
         try {
-            const userData = await putContainer(router.query.id, container);
+            await putContainer(router.query.id, container);
         } catch (error) {
             console.error('Erro ao autenticar usuário:', error);
         }

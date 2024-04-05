@@ -1,9 +1,8 @@
 import api from '../../api/config'
-import Router from 'next/router';
 import 'react-toastify/dist/ReactToastify.css';
 
 export async function getType() {
-    var response = await api.get('/containertype')
+    const response = await api.get('/containertype')
         .then((response) => {
             return response.data
         })

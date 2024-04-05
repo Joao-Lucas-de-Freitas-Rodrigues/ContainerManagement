@@ -1,12 +1,8 @@
 import Link from "next/Link"
 import styles from '../styles/Layout.module.css'
-import { useEffect, useState } from "react";
+import PropTypes from 'prop-types';
 
 export default function Layout(props){
-    
-    const [user, setUser] = useState()
-
-
     
     return(
         <div className={styles.layout}>
@@ -18,5 +14,8 @@ export default function Layout(props){
             </div>
         </div>
     )
-
 }
+
+Layout.propTypes = {
+    children: PropTypes.node.isRequired
+};

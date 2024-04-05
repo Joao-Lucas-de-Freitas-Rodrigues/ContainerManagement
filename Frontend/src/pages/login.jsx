@@ -2,18 +2,16 @@ import { Form, FormGroup, Label, Input, Button } from 'reactstrap'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import styles from '../styles/Login.module.css'
 import { useForm } from 'react-hook-form'
-import { useRouter } from "next/router";
 import {validateUser} from '../services/containermanagement/loginServices'
 
 export default function Login() {
 
-  const { register, handleSubmit, errors } = useForm({
+  const { register, handleSubmit } = useForm({
   })
 
   async function handleLogin(user) {
     try {
-        const userData = await validateUser(user);
-        console.log(userData)
+        await validateUser(user);
         // Se o login for bem-sucedido, redirecione ou faça outras ações necessárias
     } catch (error) {
         // Lidar com erros de autenticação, por exemplo, exibindo uma mensagem de erro ao usuário

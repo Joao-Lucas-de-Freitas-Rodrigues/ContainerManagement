@@ -13,7 +13,7 @@ namespace ContainerManagement.Controllers
 
         public ContainerStatusController(IContainerStatusRepository containerStatusRepository)
         {
-            _containerStatusRepository = containerStatusRepository ?? throw new ArgumentNullException();
+            _containerStatusRepository = containerStatusRepository ?? throw new ArgumentNullException("a", "Erro ao conectar");
         }
 
         [Authorize]
