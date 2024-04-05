@@ -37,20 +37,18 @@ export default function Cadastrar() {
 
     const [state, setState] = useState([])
 
-    useEffect(() => {
+    useEffect(async () => {
         try {
-            (async () => {
-                await Promise.all([getState()])
-                    .then(function (results) {
-                        setState(results[0])
-                        console.log(state)
-                    });
-            })()
+            await Promise.all([getState()])
+                .then(function (results) {
+                    setState(results[0])
+                    console.log(state)
+                });
         } catch (error) {
             errorMsg(error.message);
         }
     }, [])
-    
+
     const userSubmit = values => postUser(values);
 
     return (
@@ -239,10 +237,10 @@ export default function Cadastrar() {
                                 maxLength="100"
                                 type={'select'}
                             >
-                            <option value={''}>Selecione</option>
-                            {state.map((res) => (
-                                <option key={res.id} value={res.id}>{res.description}</option>
-                            ))}
+                                <option value={''}>Selecione</option>
+                                {state.map((res) => (
+                                    <option key={res.id} value={res.id}>{res.description}</option>
+                                ))}
                             </Input>
                             <p style={errorColor}>{errors.state?.message}</p>
                         </FormGroup>
