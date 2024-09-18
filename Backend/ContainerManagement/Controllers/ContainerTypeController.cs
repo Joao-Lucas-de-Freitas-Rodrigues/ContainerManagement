@@ -2,6 +2,7 @@
 using ContainerManagement.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ContainerManagement.Services;
 
 namespace ContainerManagement.Controllers
 {
@@ -9,18 +10,18 @@ namespace ContainerManagement.Controllers
     [Route("api/containertype")]
     public class ContainerTypeController : Controller
     {
-        private readonly IContainerTypeRepository _containerTypeRepository;
+        private readonly ContainerTypeFacade _containerTypeFacade;
 
-        public ContainerTypeController(IContainerTypeRepository containerTypeRepository)
+        public ContainerTypeController(ContainerTypeFacade containerTypeFacade)
         {
-            _containerTypeRepository = containerTypeRepository ?? throw new ArgumentNullException(nameof(containerTypeRepository), "Erro ao conectar");
+            _containerTypeFacade = containerTypeFacade;
         }
 
         [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
-            var container = _containerTypeRepository.Get();
+            var container = _containerTypeFacade.GetAllContainerTypes();
 
             return Ok(container);
         }

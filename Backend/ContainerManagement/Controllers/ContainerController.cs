@@ -1,5 +1,6 @@
 ﻿using ContainerManagement.Model;
 using ContainerManagement.Repository;
+using ContainerManagement.Services;
 using ContainerManagement.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,39 +13,43 @@ namespace ContainerManagement.Controllers
     public class ContainerController : Controller
     {
 
-        private readonly IContainerRepository _containerRepository;
+        private readonly ContainerFacade _containerFacade;
 
-        public ContainerController(IContainerRepository containerRepository)
+        public ContainerController(ContainerFacade containerFacade)
         {
-            _containerRepository = containerRepository ?? throw new ArgumentNullException(nameof(containerRepository), "Erro ao conectar");
+            _containerFacade = containerFacade;
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Add(ContainerViewModel containerView)
+        public IActionResult AddContainer([FromBody] Container container)
         {
-            var container = new Container(containerView.container_description, containerView.container_name, containerView.container_type_id, containerView.container_status_id);
+            if (container == null)
+            {
+                return BadRequest();
+            }
 
-            _containerRepository.Add(container);
-
-            return Ok();
+            _containerFacade.AddContainer(container);
+            return CreatedAtAction(nameof(GetContainerById), new { id = container.Id }, container);
         }
 
         [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
-            var container = _containerRepository.Get();
-
-            return Ok(container);
+            var containers = _containerFacade.GetAllContainers();
+            return Ok(containers);
         }
 
         [Authorize]
         [HttpGet("{id}")]
-        public IActionResult GetById(int id)
+        public IActionResult GetContainerById(int id)
         {
-            var container = _containerRepository.GetById(id);
-
+            var container = _containerFacade.GetContainerById(id);
+            if (container == null)
+            {
+                return NotFound();
+            }
             return Ok(container);
         }
 
@@ -52,22 +57,30 @@ namespace ContainerManagement.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, ContainerViewModel containerView)
         {
+            var existingContainer = _containerFacade.GetContainerById(id);
+            if (existingContainer == null)
+            {
+                return NotFound();
+            }
+
             var container = new Container(containerView.container_description, containerView.container_name, containerView.container_type_id, containerView.container_status_id);
 
-            _containerRepository.Put(id, container);
-
-            return Ok();
+            _containerFacade.UpdateContainer(id,container);
+            return NoContent();
         }
 
         [Authorize]
         [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
+        public IActionResult DeleteContainer(int id)
         {
-            var container = _containerRepository.GetById(id);
+            var container = _containerFacade.GetContainerById(id);
+            if (container == null)
+            {
+                return NotFound();
+            }
 
-            _containerRepository.Delete(container);
-
-            return Ok();
+            _containerFacade.DeleteContainer(container);
+            return NoContent();
         }
     }
 }

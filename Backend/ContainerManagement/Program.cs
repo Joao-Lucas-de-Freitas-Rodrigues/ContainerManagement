@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using ContainerManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +55,9 @@ builder.Services.AddTransient<IContainerRepository, ContainerRepository>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
 builder.Services.AddTransient<IContainerTypeRepository, ContainerTypeRepository>();
 builder.Services.AddTransient<IContainerStatusRepository, ContainerStatusRepository>();
+builder.Services.AddScoped<ContainerStatusFacade>();
+builder.Services.AddScoped<ContainerFacade>();
+builder.Services.AddScoped<UserFacade>();
 
 builder.Services.AddCors(options =>
 {

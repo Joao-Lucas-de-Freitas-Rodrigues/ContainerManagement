@@ -1,5 +1,6 @@
 ﻿using ContainerManagement.Model;
 using ContainerManagement.Repository;
+using ContainerManagement.Services;
 using ContainerManagement.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,11 +11,11 @@ namespace ContainerManagement.Controllers
     [Route("api/user")]
     public class UserController : Controller
     {
-        private readonly IUserRepository _userRepository;
+        private readonly UserFacade _userFacade;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(UserFacade userFacade)
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository), "Erro ao conectar");
+            _userFacade = userFacade;
         }
 
         [Authorize]
@@ -23,7 +24,7 @@ namespace ContainerManagement.Controllers
         {
             var user = new User(userView.username, userView.password);
 
-            _userRepository.Add(user);
+            _userFacade.AddUser(user);
 
             return Ok();
         }
@@ -31,7 +32,7 @@ namespace ContainerManagement.Controllers
         [HttpGet]
         public IActionResult Get(string username)
         {
-            var user = _userRepository.Get(username);
+            var user = _userFacade.GetUserByUsername(username);
 
             return Ok(user);
         }

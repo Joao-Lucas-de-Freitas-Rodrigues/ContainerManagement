@@ -35,6 +35,6 @@ namespace ContainerManagement.Repository
                 "Server=localhost;" +
                 "Port=3306;Database=container_management;" +
                 "User Id=root;" +
-                );
+                "Password=Cearamor123");
     }
 }
