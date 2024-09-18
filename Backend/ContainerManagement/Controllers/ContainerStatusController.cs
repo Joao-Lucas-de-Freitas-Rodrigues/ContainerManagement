@@ -2,6 +2,7 @@
 using ContainerManagement.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ContainerManagement.Services;
 
 namespace ContainerManagement.Controllers
 {
@@ -9,18 +10,18 @@ namespace ContainerManagement.Controllers
     [Route("api/containerstatus")]
     public class ContainerStatusController : Controller
     {
-        private readonly IContainerStatusRepository _containerStatusRepository;
+        private readonly ContainerStatusFacade _containerStatusFacade;
 
-        public ContainerStatusController(IContainerStatusRepository containerStatusRepository)
+        public ContainerStatusController(ContainerStatusFacade containerStatusFacade)
         {
-            _containerStatusRepository = containerStatusRepository ?? throw new ArgumentNullException(nameof(containerStatusRepository), "Erro ao conectar");
+            _containerStatusFacade = containerStatusFacade;
         }
 
         [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
-            var container = _containerStatusRepository.Get();
+            var container = _containerStatusFacade.GetAllContainerStatuses();
 
             return Ok(container);
         }
