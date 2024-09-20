@@ -5,7 +5,29 @@ namespace ContainerManagement.Repository
 {
     public class ContainerTypeRepository : IContainerTypeRepository
     {
-        private readonly ConnectionContext _context = new ConnectionContext();
+        private static ContainerTypeRepository _instance;
+        private static readonly object _lock = new object();
+        private readonly ConnectionContext _context = ConnectionContext.Instance;
+
+        private ContainerTypeRepository() { }
+
+        public static ContainerTypeRepository Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new ContainerTypeRepository();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
 
         public List<ContainerType> Get()
         {

@@ -5,7 +5,29 @@ namespace ContainerManagement.Repository
 {
     public class UserRepository : IUserRepository
     {
-        private readonly ConnectionContext _context = new ConnectionContext();
+        private static UserRepository _instance;
+        private static readonly object _lock = new object();
+        private readonly ConnectionContext _context = ConnectionContext.Instance;
+
+        private UserRepository() { }
+
+        public static UserRepository Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new UserRepository();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
 
         public void Add(User user)
         {
@@ -14,10 +36,9 @@ namespace ContainerManagement.Repository
             _context.SaveChanges();
         }
 
-        User IUserRepository.Get(string username)
+        public User Get(string username)
         {
-            User user = _context.Users.FirstOrDefault(x => x.username == username);
-            return user;
+            return _context.Users.FirstOrDefault(x => x.username == username);
         }
     }
 }

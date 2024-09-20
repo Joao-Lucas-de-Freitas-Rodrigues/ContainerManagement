@@ -5,13 +5,33 @@ namespace ContainerManagement.Repository
 {
     public class ConnectionContext : DbContext
     {
+        private static ConnectionContext _instance;
+        private static readonly object _lock = new object();
+
         public DbSet<Container> Containers { get; set; }
-        
         public DbSet<ContainerType> ContainerTypes { get; set; }
-
         public DbSet<ContainerStatus> ContainersStatus { get; set; }
-
         public DbSet<User> Users { get; set; }
+
+        private ConnectionContext() { }
+
+        public static ConnectionContext Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new ConnectionContext();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -5,7 +5,29 @@ namespace ContainerManagement.Repository
 {
     public class ContainerRepository : IContainerRepository
     {
-        private readonly ConnectionContext _context = new ConnectionContext();
+        private static ContainerRepository _instance;
+        private static readonly object _lock = new object();
+        private readonly ConnectionContext _context = ConnectionContext.Instance;
+
+        private ContainerRepository() { }
+
+        public static ContainerRepository Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    lock (_lock)
+                    {
+                        if (_instance == null)
+                        {
+                            _instance = new ContainerRepository();
+                        }
+                    }
+                }
+                return _instance;
+            }
+        }
 
         public void Add(Container container)
         {
@@ -16,35 +38,22 @@ namespace ContainerManagement.Repository
         public List<Container> Get()
         {
             return _context.Containers
-                .Include(ct => ct.ContainerType)
-                .Include(cs => cs.ContainerStatus)
+                .Include(c => c.ContainerType)
+                .Include(c => c.ContainerStatus)
                 .AsNoTracking()
                 .ToList();
-        }
-
-        public Container GetById(int id)
-        {
-            Container container = _context.Containers
-                .Include(ct => ct.ContainerType)
-                .Include(cs => cs.ContainerStatus)
-                .AsNoTracking()
-                .FirstOrDefault(ct => ct.id == id);
-            return container;
         }
 
         public void Put(int id, Container container)
         {
             container.id = id;
-
             _context.Entry(container).State = EntityState.Modified;
-
             _context.SaveChanges();
         }
 
         public void Delete(Container container)
         {
             _context.Containers.Remove(container);
-
             _context.SaveChanges();
         }
     }
