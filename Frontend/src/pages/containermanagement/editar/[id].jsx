@@ -8,7 +8,7 @@ const { yupResolver } = require('@hookform/resolvers/yup');
 const yup = require('yup');
 import { getType } from '../../../services/containermanagement/containerTypeServices';
 import { getStatus } from '../../../services/containermanagement/containerStatusServices';
-import { getContainerId, putContainer } from '../../../services/containermanagement/containerServices';
+import { getContainerId, getContainerImageId, putContainer } from '../../../services/containermanagement/containerServices';
 
 const validationPost = yup.object().shape({
     container_name: yup.string().required("Campo Obrigatório"),
@@ -29,6 +29,7 @@ export default function Editar() {
     const [container, setContainer] = useState([]);
     const [containerType, setContainerType] = useState([]);
     const [containerStatus, setContainerStatus] = useState([]);
+    const [imageUrl, setImageUrl] = useState("");
 
     const fields = ['container_name', 'container_description', 'container_type_id', 'container_status_id'];
     fields.forEach(field => {
@@ -40,6 +41,27 @@ export default function Editar() {
             setContainer(await getContainerId(router.query.id))
             setContainerType(await getType())
             setContainerStatus(await getStatus())
+
+
+            const token = localStorage.getItem('token');
+
+            // Faz a requisição para obter a imagem
+            const response = await fetch(`https://localhost:7061/api/container/image/${router.query.id}`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (response.ok) {
+                const imageUrl = URL.createObjectURL(await response.blob());
+                setImageUrl(imageUrl);
+            } else {
+                console.error("Erro ao carregar a imagem", response.status);
+            }
+
+            // setImageUrl(await getContainerImageId(router.query.id))
+
+            console.log(await getContainerImageId(router.query.id))
         } catch (error) {
             console.log(error)
         }
@@ -125,6 +147,31 @@ export default function Editar() {
                         </FormGroup>
                     </Col>
                 </Row>
+                <Row>
+                    <Col md={3}>
+                        <FormGroup>
+                            <Label for="image">Upload Imagem</Label>
+                            <Input
+                                id="image"
+                                name="image"
+                                type="file"
+                                innerRef={register}
+                            />
+                        </FormGroup>
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col md={6}>
+                        {imageUrl && (
+                            <div>
+                                <Label>Imagem Atual do Container</Label>
+                                <img src={imageUrl} alt="Container Image" style={{ width: '300px', height: 'auto' }} />
+                            </div>
+                        )}
+                    </Col>
+                </Row>
+
                 <Button
                     color="success"
                     type="submit"

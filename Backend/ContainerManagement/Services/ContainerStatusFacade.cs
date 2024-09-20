@@ -1,4 +1,5 @@
 ﻿using ContainerManagement.Model;
+using ContainerManagement.Repository;
 
 namespace ContainerManagement.Services
 {
@@ -6,9 +7,9 @@ namespace ContainerManagement.Services
     {
         private readonly IContainerStatusRepository _containerStatusRepository;
 
-        public ContainerStatusFacade(IContainerStatusRepository containerStatusRepository)
+        public ContainerStatusFacade()
         {
-            _containerStatusRepository = containerStatusRepository;
+            _containerStatusRepository = ContainerStatusRepository.Instance;
         }
 
         public IEnumerable<ContainerStatus> GetAllContainerStatuses()

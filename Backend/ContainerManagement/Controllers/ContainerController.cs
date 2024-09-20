@@ -1,10 +1,8 @@
 ﻿using ContainerManagement.Model;
-using ContainerManagement.Repository;
 using ContainerManagement.Services;
 using ContainerManagement.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace ContainerManagement.Controllers
 {
@@ -12,25 +10,49 @@ namespace ContainerManagement.Controllers
     [Route("api/container")]
     public class ContainerController : Controller
     {
-
         private readonly ContainerFacade _containerFacade;
 
-        public ContainerController(ContainerFacade containerFacade)
+        public ContainerController()
         {
-            _containerFacade = containerFacade;
+            // Usando o Façade que já está configurado com o Singleton
+            _containerFacade = new ContainerFacade();
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult AddContainer([FromBody] Container container)
+        public async Task<IActionResult> AddContainer([FromForm] ContainerViewModel containerView)
         {
-            if (container == null)
+            byte[] imageData = null;
+            if (containerView.Image != null)
             {
-                return BadRequest();
+                using (var ms = new MemoryStream())
+                {
+                    await containerView.Image.CopyToAsync(ms);
+                    imageData = ms.ToArray();
+                }
             }
 
+            var container = new Container(
+                containerView.container_description,
+                containerView.container_name,
+                containerView.container_type_id,
+                containerView.container_status_id,
+                imageData // Passando a imagem
+            );
+
             _containerFacade.AddContainer(container);
-            return CreatedAtAction(nameof(GetContainerById), new { id = container.Id }, container);
+            return CreatedAtAction(nameof(GetContainerById), new { id = container.id }, container);
+        }
+
+        [Authorize]
+        [HttpGet("image/{id}")]
+        public IActionResult GetContainerImage(int id)
+        {
+            var container = _containerFacade.GetBlobById(id);
+
+
+            // Retorna a imagem como conteúdo binário
+            return File(container, "image/jpeg"); // Ajuste o tipo MIME de acordo com o formato da imagem, por exemplo "image/png" se necessário.
         }
 
         [Authorize]
@@ -63,9 +85,14 @@ namespace ContainerManagement.Controllers
                 return NotFound();
             }
 
-            var container = new Container(containerView.container_description, containerView.container_name, containerView.container_type_id, containerView.container_status_id);
+            var container = new Container(
+                containerView.container_description,
+                containerView.container_name,
+                containerView.container_type_id,
+                containerView.container_status_id
+            );
 
-            _containerFacade.UpdateContainer(id,container);
+            _containerFacade.UpdateContainer(id, container);
             return NoContent();
         }
 

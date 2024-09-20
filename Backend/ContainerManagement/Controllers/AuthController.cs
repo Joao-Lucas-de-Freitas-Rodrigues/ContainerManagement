@@ -1,4 +1,5 @@
 ﻿using ContainerManagement.Model;
+using ContainerManagement.Repository;
 using ContainerManagement.Services;
 using Microsoft.AspNetCore.Mvc;
 using BC = BCrypt.Net.BCrypt;
@@ -11,17 +12,18 @@ namespace ContainerManagement.Controllers
     {
         private readonly IUserRepository _userRepository;
 
-        public AuthController(IUserRepository userRepository)
+        public AuthController()
         {
-            _userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository), "Erro ao conectar");
+            // Usando o Singleton diretamente
+            _userRepository = UserRepository.Instance;
         }
 
         [HttpPost]
         public IActionResult Auth(string username, string password)
         {
-            User user  = _userRepository.Get(username);
+            User user = _userRepository.Get(username);
 
-            if(!BC.Verify(password, user.password))
+            if (!BC.Verify(password, user.password))
             {
                 return BadRequest("invalid credentials");
             }

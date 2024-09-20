@@ -37,11 +37,40 @@ namespace ContainerManagement.Repository
 
         public List<Container> Get()
         {
+            var containers = _context.Containers
+       .Include(c => c.ContainerType)
+       .Include(c => c.ContainerStatus)
+       .AsNoTracking()
+       .ToList();
+
+            // Itera sobre os containers e verifica o campo da imagem
+            foreach (var container in containers)
+            {
+                if (container.Image == null) // Verifica se a imagem é null, não DBNull
+                {
+                    // Opcional: Executar alguma ação se a imagem for null, se necessário
+                }
+            }
+
+            return containers;
+        }
+
+        public Container GetById(int id)
+        {
             return _context.Containers
-                .Include(c => c.ContainerType)
-                .Include(c => c.ContainerStatus)
+                .Include(ct => ct.ContainerType)
+                .Include(cs => cs.ContainerStatus)
                 .AsNoTracking()
-                .ToList();
+                .FirstOrDefault(c => c.id == id);
+        }
+
+        public byte[] GetBlobById(int id)
+        {
+            return _context.Containers
+        .AsNoTracking()
+        .Where(c => c.id == id)
+        .Select(c => c.Image)  // Supondo que o campo BLOB seja 'Image'
+        .FirstOrDefault();
         }
 
         public void Put(int id, Container container)

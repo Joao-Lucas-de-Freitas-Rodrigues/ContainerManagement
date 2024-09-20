@@ -1,7 +1,5 @@
 ﻿using ContainerManagement.Model;
-using ContainerManagement.Repository;
 using ContainerManagement.Services;
-using ContainerManagement.ViewModel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,27 +11,33 @@ namespace ContainerManagement.Controllers
     {
         private readonly UserFacade _userFacade;
 
-        public UserController(UserFacade userFacade)
+        public UserController()
         {
-            _userFacade = userFacade;
+            _userFacade = new UserFacade();
         }
 
         [Authorize]
         [HttpPost]
-        public IActionResult Add(UserViewModel userView)
+        public IActionResult Add([FromBody] User user)
         {
-            var user = new User(userView.username, userView.password);
+            if (user == null)
+            {
+                return BadRequest();
+            }
 
             _userFacade.AddUser(user);
-
-            return Ok();
+            return CreatedAtAction(nameof(GetUserByUsername), new { username = user.username }, user);
         }
 
-        [HttpGet]
-        public IActionResult Get(string username)
+        [Authorize]
+        [HttpGet("{username}")]
+        public IActionResult GetUserByUsername(string username)
         {
             var user = _userFacade.GetUserByUsername(username);
-
+            if (user == null)
+            {
+                return NotFound();
+            }
             return Ok(user);
         }
     }

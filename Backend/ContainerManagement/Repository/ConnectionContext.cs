@@ -40,9 +40,15 @@ namespace ContainerManagement.Repository
             modelBuilder.Entity<ContainerStatus>().ToTable("container_status");
 
             modelBuilder.Entity<Container>()
+    .Property(c => c.Image)
+    .HasColumnName("Image")  // Certifique-se de que o nome da coluna é o correto
+    .HasColumnType("BLOB");
+
+            modelBuilder.Entity<Container>()
             .HasOne(c => c.ContainerType)
             .WithMany()
-            .HasForeignKey(c => c.container_type_id);
+            .HasForeignKey(c => c.container_type_id)
+            ;
 
             modelBuilder.Entity<Container>()
                 .HasOne(c => c.ContainerStatus)

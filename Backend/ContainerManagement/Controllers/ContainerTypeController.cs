@@ -1,8 +1,6 @@
-﻿using ContainerManagement.Repository;
-using ContainerManagement.Model;
+﻿using ContainerManagement.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using ContainerManagement.Services;
 
 namespace ContainerManagement.Controllers
 {
@@ -12,18 +10,17 @@ namespace ContainerManagement.Controllers
     {
         private readonly ContainerTypeFacade _containerTypeFacade;
 
-        public ContainerTypeController(ContainerTypeFacade containerTypeFacade)
+        public ContainerTypeController()
         {
-            _containerTypeFacade = containerTypeFacade;
+            _containerTypeFacade = new ContainerTypeFacade();
         }
 
         [Authorize]
         [HttpGet]
         public IActionResult Get()
         {
-            var container = _containerTypeFacade.GetAllContainerTypes();
-
-            return Ok(container);
+            var containerTypes = _containerTypeFacade.GetAllContainerTypes();
+            return Ok(containerTypes);
         }
     }
 }

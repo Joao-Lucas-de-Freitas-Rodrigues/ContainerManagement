@@ -5,6 +5,8 @@
         void Add(Container container);
         List<Container> Get();
         Container GetById(int id);
+        byte[] GetBlobById(int id);
+
         void Put(int id, Container container);
         void Delete(Container container);
     }

@@ -35,6 +35,17 @@ export async function getContainerId(id) {
     return response;
 }
 
+export async function getContainerImageId(id) {
+    const response = await api.get('/container/image/' + id)
+        .then((response) => {
+            return response.data
+        })
+        .catch((err) => {
+            return console.log(err.response.status)
+        })
+    return response;
+}
+
 export async function putContainer(id, values) {
     const response = await api.put('/container/' + id, values)
         .then(() => {

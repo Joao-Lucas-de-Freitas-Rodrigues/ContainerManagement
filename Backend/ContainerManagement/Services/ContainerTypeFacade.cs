@@ -1,4 +1,5 @@
 ﻿using ContainerManagement.Model;
+using ContainerManagement.Repository;
 
 namespace ContainerManagement.Services
 {
@@ -6,9 +7,9 @@ namespace ContainerManagement.Services
     {
         private readonly IContainerTypeRepository _containerTypeRepository;
 
-        public ContainerTypeFacade(IContainerTypeRepository containerTypeRepository)
+        public ContainerTypeFacade()
         {
-            _containerTypeRepository = containerTypeRepository;
+            _containerTypeRepository = ContainerTypeRepository.Instance;
         }
 
         public IEnumerable<ContainerType> GetAllContainerTypes()

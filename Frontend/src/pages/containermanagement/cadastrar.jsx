@@ -37,9 +37,19 @@ export default function Cadastrar() {
         resolver: yupResolver(validationPost)
     })
 
-    async function containerSubmit(user) {
+    async function containerSubmit(data) {
+        const formData = new FormData();
+        formData.append('container_name', data.container_name);
+        formData.append('container_description', data.container_description);
+        formData.append('container_type_id', data.container_type_id);
+        formData.append('container_status_id', data.container_status_id);
+        
+        if (data.image[0]) {
+            formData.append('image', data.image[0]); // Adicionando a imagem
+        }
+
         try {
-            await postContainer(user);
+            await postContainer(formData);
         } catch (error) {
             console.error('Erro ao autenticar usuário:', error);
         }
@@ -48,7 +58,7 @@ export default function Cadastrar() {
     return (
         <Layout>
             <h2>Cadastrar Container</h2>
-            <Form onSubmit={handleSubmit(containerSubmit)}>
+            <Form onSubmit={handleSubmit(containerSubmit)} encType="multipart/form-data">
                 <Row>
                     <Col md={3}>
                         <FormGroup>
@@ -59,23 +69,21 @@ export default function Cadastrar() {
                                 id="containerId"
                                 name="container_name"
                                 innerRef={register}
-                                maxLength="100"
                             />
-                            <p style={errorColor}>{errors.name?.message}</p>
+                            {errors.container_name && <span style={errorColor}>{errors.container_name.message}</span>}
                         </FormGroup>
                     </Col>
                     <Col md={3}>
                         <FormGroup>
-                            <Label for="descriptionId">
-                                Descrição do Container
+                            <Label for="container_description">
+                                Descrição
                             </Label>
                             <Input
-                                id="descriptionId"
+                                id="container_description"
                                 name="container_description"
                                 innerRef={register}
-                                maxLength="100"
                             />
-                            <p style={errorColor}>{errors.description?.message}</p>
+                            {errors.container_description && <span style={errorColor}>{errors.container_description.message}</span>}
                         </FormGroup>
                     </Col>
                     <Col md={3}>
@@ -83,16 +91,18 @@ export default function Cadastrar() {
                             <Label for="containerTypeId">
                                 Tipo Container
                             </Label>
-                            <Input
-                                id="containerTypeId"
-                                name="container_type_id"
-                                type="select"
-                                innerRef={register}
-                            >
-                                {containerType.map((item) => (
-                                    <option key={item.id} value={item.id}>{item.description}</option>
-                                ))}
-                            </Input>
+                            <Col sm={10}>
+                                <Input
+                                    id="containerTypeId"
+                                    name="container_type_id"
+                                    type="select"
+                                    innerRef={register}
+                                >
+                                    {containerType.map((item) => (
+                                        <option key={item.id} value={item.id}>{item.description}</option>
+                                    ))}
+                                </Input>
+                            </Col>
                         </FormGroup>
                     </Col>
                     <Col md={3}>
@@ -100,16 +110,31 @@ export default function Cadastrar() {
                             <Label for="containerStatusId">
                                 Status Container
                             </Label>
+                            <Col sm={3}>
+                                <Input
+                                    id="containerStatusId"
+                                    name="container_status_id"
+                                    type="select"
+                                    innerRef={register}
+                                >
+                                    {containerStatus.map((item) => (
+                                        <option key={item.id} value={item.id}>{item.description}</option>
+                                    ))}
+                                </Input>
+                            </Col>
+                        </FormGroup>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col md={3}>
+                        <FormGroup>
+                            <Label for="image">Upload Imagem</Label>
                             <Input
-                                id="containerStatusId"
-                                name="container_status_id"
-                                type="select"
+                                id="image"
+                                name="image"
+                                type="file"
                                 innerRef={register}
-                            >
-                                {containerStatus.map((item) => (
-                                    <option key={item.id} value={item.id}>{item.description}</option>
-                                ))}
-                            </Input>
+                            />
                         </FormGroup>
                     </Col>
                 </Row>
@@ -122,4 +147,4 @@ export default function Cadastrar() {
             </Form>
         </Layout>
     )
-};
+}

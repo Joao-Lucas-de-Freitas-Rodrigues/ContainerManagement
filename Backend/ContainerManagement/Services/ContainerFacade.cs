@@ -1,4 +1,5 @@
 ﻿using ContainerManagement.Model;
+using ContainerManagement.Repository;
 
 namespace ContainerManagement.Services
 {
@@ -6,9 +7,9 @@ namespace ContainerManagement.Services
     {
         private readonly IContainerRepository _containerRepository;
 
-        public ContainerFacade(IContainerRepository containerRepository)
+        public ContainerFacade()
         {
-            _containerRepository = containerRepository;
+            _containerRepository = ContainerRepository.Instance;
         }
 
         public void AddContainer(Container container)
@@ -19,6 +20,11 @@ namespace ContainerManagement.Services
         public Container GetContainerById(int id)
         {
             return _containerRepository.GetById(id);
+        }
+
+        public byte[] GetBlobById(int id)
+        {
+            return _containerRepository.GetBlobById(id);
         }
 
         public List<Container> GetAllContainers()

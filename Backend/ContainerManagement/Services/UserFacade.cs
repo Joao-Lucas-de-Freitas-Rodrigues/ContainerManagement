@@ -1,4 +1,5 @@
 ﻿using ContainerManagement.Model;
+using ContainerManagement.Repository;
 
 namespace ContainerManagement.Services
 {
@@ -6,9 +7,9 @@ namespace ContainerManagement.Services
     {
         private readonly IUserRepository _userRepository;
 
-        public UserFacade(IUserRepository userRepository)
+        public UserFacade()
         {
-            _userRepository = userRepository;
+            _userRepository = UserRepository.Instance;
         }
 
         public User GetUserByUsername(string username)
@@ -20,6 +21,5 @@ namespace ContainerManagement.Services
         {
             _userRepository.Add(user);
         }
-
     }
 }
