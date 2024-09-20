@@ -11,11 +11,12 @@ namespace ContainerManagement.Controllers
     public class ContainerController : Controller
     {
         private readonly ContainerFacade _containerFacade;
+        private readonly ContainerColorDetection _containerColor;
 
         public ContainerController()
         {
-            // Usando o Façade que já está configurado com o Singleton
             _containerFacade = new ContainerFacade();
+            _containerColor = new ContainerColorDetection();
         }
 
         [Authorize]
@@ -31,6 +32,8 @@ namespace ContainerManagement.Controllers
                     imageData = ms.ToArray();
                 }
             }
+
+            containerView.container_description = "Container de cor " + _containerColor.DetectContainerColor(imageData);
 
             var container = new Container(
                 containerView.container_description,
